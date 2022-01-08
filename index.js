@@ -14,6 +14,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@clu
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const collection = client.db("Task_Manager").collection("task");
+  const userCollection = client.db("Task_Manager").collection("user");
 
   // POST DATA //
 
@@ -23,6 +24,16 @@ client.connect(err => {
       .then(result => {
         res.send(result);
       })
+  })
+
+  // POST USER INFO //
+
+  app.post('/addUser', (req, res) => {
+    const user = req.body;
+    userCollection.insertOne(user)
+    .then(result => {
+      res.send(result);
+    })
   })
 
   // GET DATA //
