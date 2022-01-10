@@ -4,6 +4,7 @@ const cors = require('cors');
 const ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config()
+// const bcrypt = require('bcrypt');
 
 const app = express()
 app.use(bodyParser.json());
@@ -28,18 +29,31 @@ client.connect(err => {
 
   // POST USER INFO //
 
-  app.post('/addUser', (req, res) => {
-    const user = req.body;
+  app.post('/addUser', async (req, res) => {
+    // const salt = await bcrypt.genSalt();
+    // const hashPassword = await bcrypt.hash(req.body.password, salt)
+    // const email = req.body.email;
+    const user = {email: req.body.email, date: new Date().toLocaleString()};
     userCollection.insertOne(user)
     .then(result => {
       res.send(result);
     })
   })
 
+  // // User Login Info //
+  /* >>>>>>>>>>>>>>>>>>>> */
+
+  // app.get('/users', (req, res) => {
+  //   collection.find({})
+  //     .toArray((err, documents) => {
+  //       res.send(documents);
+  //     })
+  // })
+
   // GET DATA //
 
-  app.get('/api/tasks', (req, res) => {
-      collection.find({})
+  app.get('/api/tasks/:email', (req, res) => {
+    collection.find({}).filter({ email: req.params.email })
       .toArray((err, documents) => {
         res.send(documents);
       })
