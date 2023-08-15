@@ -8,7 +8,9 @@ require('dotenv').config()
 
 const app = express()
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: '*',
+}));
 
 const port = 5000;
 const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-shard-00-00.jvd1e.mongodb.net:27017,cluster0-shard-00-01.jvd1e.mongodb.net:27017,cluster0-shard-00-02.jvd1e.mongodb.net:27017/?ssl=true&replicaSet=atlas-8u3d2q-shard-0&authSource=admin&retryWrites=true&w=majority`;
